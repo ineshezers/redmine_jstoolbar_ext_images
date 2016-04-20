@@ -102,24 +102,14 @@
       toolbar = toolbar_obj, images = images_array;
       if(images.length ===0 ) return [];
       var buttons = img_buttons();
-      buttons.push(other_button());
       return buttons;
     };
 
     var img_buttons = function(){
       return $.map(images, function (filename) {
         var img_data = img_button_data(filename);
-        var img_thumbnail_data = img_thumbnail_button_data(filename);
-        return build_button(img_data).add(build_thumbnail_button(img_thumbnail_data));
+        return build_button(img_data);
       });
-    };
-
-    var other_button = function(){
-      var fn = RedmineWikiToolbarExt.ImagesOriginalFn.replace(/this/, 'toolbar');
-      return $('<button class="full">[' + jsToolBar.strings['Image'] + ']</button>')
-        .click(function(){
-          eval(fn);
-        }).add(build_thumbnail_button({ label: '', beg: '{{thumbnail(', end: ', size=100, title=Thumbnail)}}' }));
     };
 
     var img_button_beg = {
@@ -146,12 +136,6 @@
       var title = data.label.replace(/"/g, '&quot;');
       var text = decodeURIComponent(data.label);
       return $('<button class="full" title="' + title + '">' + text + '</button>')
-        .data(data)
-        .click( image_button_click);
-    };
-
-    var build_thumbnail_button = function (data) {
-      return $('<button class="thumbnail">&gt; thumb</button>')
         .data(data)
         .click( image_button_click);
     };
